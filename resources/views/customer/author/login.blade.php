@@ -15,21 +15,31 @@
                 src="./image/logon.png" alt="logo" class='w-40 inline-block' />
               </a>
           </div>
-  
-          <form>
+          <form method="post" action="/login">
+            @csrf
             <div class="space-y-6">
               <div>
-                <label class="text-gray-800 text-sm mb-2 block">Email Id</label>
+                <label class="text-gray-800 text-sm mb-2 block">Email</label>
                 <input name="email" type="text" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter email" />
               </div>
+              @error('email')
+              <div class="invalid-feedback text-red-500">
+                  {{ $message }}
+              </div>
+              @enderror
               <div>
                 <label class="text-gray-800 text-sm mb-2 block">Password</label>
                 <input name="password" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter password" />
               </div>
+              @error('password')
+              <div class="invalid-feedback text-red-500">
+                  {{ $message }}
+              </div>
+              @enderror
             </div>
   
             <div class="!mt-12">
-              <button type="button" class="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+              <button type="submit" class="w-full py-3 px-4 text-sm tracking-wider font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
                 Login Account
               </button>
             </div>

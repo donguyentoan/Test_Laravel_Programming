@@ -6,10 +6,13 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "babenkoivan/elastic-scout-driver": "^3.2",
+        
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
+        "laravel/scout": "^8.0",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
@@ -55,7 +58,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

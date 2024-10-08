@@ -16,16 +16,16 @@ class CreateProductsTable extends Migration
             Schema::create('products', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
-                $table->text('description');
+                $table->string('manufacturer')->nullable();
+                $table->string('model')->nullable();
+                $table->string('engine_capacity')->nullable();
+                $table->decimal('price', 10, 2);
+                $table->json('tags')->nullable(); // For storing tags like 'red', '5-door'
                 $table->string('image');
-                $table->float('price');
-                $table->bigInteger('categories_id')->unsigned();
-                $table->bigInteger('manufacture_id')->unsigned();
+                $table->boolean('is_active')->default(0); // Admin activation
                 $table->timestamps();
-    
-                // $table->foreign('categories_id')->references('id')->on('categories');
-                // $table->foreign('manufacture_id')->references('id')->on('manufactures');
             });
+            
         }
     
 
