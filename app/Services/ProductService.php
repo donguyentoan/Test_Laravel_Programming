@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Services;
-
 use App\Repositories\ProductRepositoryInterface;
 
 class ProductService{
@@ -11,7 +9,6 @@ class ProductService{
     {
         $this->productRepository = $productRepository;
     }
-
     public function index(){
         return $this->productRepository->index();
     }
@@ -33,5 +30,4 @@ class ProductService{
     public function findByActive(){
         return $this->productRepository->findByActive();
     }
-
 }

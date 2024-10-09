@@ -1,15 +1,13 @@
 <?php
-
 namespace App\Http\Controllers;
-
-
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Http\Requests\LoginRequest;
 use App\Validation\AuthorValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
@@ -24,24 +22,20 @@ class AuthorController extends Controller
         $this->authorValidation = $authorValidation;
       
     }
-
     public function login(){
         return view('customer.author.login');
     }
     public function register(){
         return view('customer.author.register');
     }
-
-
-    public function createUser(Request $request){
-        $data = $request->all();
-
-        $validate = $this->authorValidation->validatorCreateUser($data);
-
-        if ($validate->fails()) {
-            $errors = $validate->errors();
-            throw new ValidationException($validate);
-        }
+    public function createUser(RegisterRequest $request){
+      
+        $data = $request->validated(); 
+        // $data = $request->all();
+        // if ($validate->fails()) {
+        //     $errors = $validate->errors();
+        //     throw new ValidationException($validate);
+        // }
         if($data['password'] == $data['cpassword'] ){
             $user = $this->create($data);
             Auth::login($user);
@@ -53,7 +47,6 @@ class AuthorController extends Controller
       
        
     }
-
     protected function create(array $data)
     {
         $data = [
@@ -65,15 +58,15 @@ class AuthorController extends Controller
         $user = $this->userService->create($data);
         return $user;
     }
-    
-    public function loginUser(Request $request)
+    public function loginUser(LoginRequest $request)
     {
-        $data = $request->all();
-        $validate = $this->authorValidation->validateLogin($data);
-        if ($validate->fails()) {
-            $errors = $validate->errors();
-            throw new ValidationException($validate);
-        }
+        $data = $request->validated(); 
+        // $data = $request->all();
+        // $validate = $this->authorValidation->validateLogin($data);
+        // if ($validate->fails()) {
+        //     $errors = $validate->errors();
+        //     throw new ValidationException($validate);
+        // }
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
@@ -88,7 +81,6 @@ class AuthorController extends Controller
             'password' => 'Địa chị email hoặc mật khẩu không chính xác.',
         ]);
     }
-
     public function logout(){
         Auth::logout();
         return redirect('/login');

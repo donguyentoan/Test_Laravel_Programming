@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
-
 class HomeController extends Controller
 {
     protected $productService;

@@ -1,13 +1,29 @@
 <?php
-namespace App\Validation;
-use App\Repositories\ProductRepositoryInterface;
-use Illuminate\Support\Facades\Validator;
-class ProductValidation{
-   
 
-    public function validateProduct(array $data)
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ProductRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        $rules = [
+        return false;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
             'name' => 'required|max:255',
             'manufacturer' => 'required|max:1000',
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:3072',
@@ -16,8 +32,11 @@ class ProductValidation{
             'tags' => 'required',
             'price' => 'required|numeric',
         ];
-    
-        $messages = [
+    }
+
+    public function messages()
+    {
+        return [
             'name.required' => 'The product name is required.',
             'name.max' => 'The product name may not be greater than 255 characters.',
             'manufacturer.required' => 'The manufacturer field is required.',
@@ -32,7 +51,5 @@ class ProductValidation{
             'price.required' => 'The price field is required.',
             'price.numeric' => 'The price must be a valid number.',
         ];
-    
-        return Validator::make($data, $rules, $messages);
     }
 }

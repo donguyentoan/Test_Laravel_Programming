@@ -12,10 +12,7 @@ class ProductRepository implements ProductRepositoryInterface
     {
         $this->model = $product;
     }
-
     public function index(){
-
-     
         return $this->model->all();
     }
     public function edit($id){
@@ -38,7 +35,6 @@ class ProductRepository implements ProductRepositoryInterface
     }
     public function delete($id){
         return $this->model->destroy($id);
-
     }
     public function findByName($name){
         return $this->model->where('name', $name)->first();
@@ -46,6 +42,4 @@ class ProductRepository implements ProductRepositoryInterface
     public function findByActive(){
         return $this->model->where('is_active', 1)->get();
     }
-    
-
 }

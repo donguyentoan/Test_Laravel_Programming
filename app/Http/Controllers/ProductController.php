@@ -1,20 +1,17 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
+use App\Http\Requests\ProductRequest;
 use App\Validation\ProductValidation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
-
     protected $productService;
     protected $productValidation;
-
     public function __construct(ProductService $productService , ProductValidation $productValidation)
     {
         $this->productService = $productService;
@@ -24,7 +21,6 @@ class ProductController extends Controller
         $products = $this->productService->index();
         return view('admin.product.index' , ["products" => $products]);
     }
-
     public function add(){
         return view('admin.product.add');
     }
@@ -32,15 +28,13 @@ class ProductController extends Controller
         $product = $this->productService->edit($id);
         return view('admin.product.edit' , ["product" => $product]);
     }
-   
-    
-    public function addProduct(Request $request){
+    public function addProduct(ProductRequest $request){
+        $data = $request->validated();
         $data = $request->all();
-        $validate = $this->productValidation->validateAddProduct($data);
-        if ($validate->fails()) {
-            $errors = $validate->errors();
-            throw new ValidationException($validate);
-        }
+        // if ($validate->fails()) {
+        //     $errors = $validate->errors();
+        //     throw new ValidationException($validate);
+        // }
             $existingProduct = $this->productService->findByName($request->input('name'));
             if ($existingProduct) {
                 return redirect('/productList')->with('success', 'Product Already Exists');
@@ -110,13 +104,15 @@ class ProductController extends Controller
 
 
 
-    public function store(Request $request){
+    public function store(ProductRequest $request){
+          
+            $data = $request->validated();
             $data = $request->all();
-            $validate = $this->productValidation->validateEditProduct($data);
-            if ($validate->fails()) {
-                $errors = $validate->errors();
-                throw new ValidationException($validate);
-            }
+            // $validate = $this->productValidation->validateEditProduct($data);
+            // if ($validate->fails()) {
+            //     $errors = $validate->errors();
+            //     throw new ValidationException($validate);
+            // }
             $product = $this->productService->edit($data['id']);
                     $status = 0 ;
                     if($request->input('status')=="on") {
@@ -214,6 +210,4 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-
-    
     }
