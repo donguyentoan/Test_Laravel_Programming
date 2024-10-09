@@ -29,6 +29,8 @@ class ProductRepository implements ProductRepositoryInterface
         $product->tags = isset($data['tags']) ? json_encode(explode(',', $data['tags'])) : null;
         $product->is_active = $data['is_active'];
         $product->save();
+
+        return $product;
     }
     public function store($id, array $data){
         return $this->model->where('id', $id)->update($data);

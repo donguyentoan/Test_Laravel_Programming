@@ -233,3 +233,32 @@ const fakeUsersCount = () => {
 setInterval(() => {
   fakeUsersCount()
 }, 1000)
+
+
+function addToMiniCart(id, price, name, image) {
+
+  const product = {
+      id: id,
+      name: name,
+      image: image,
+      price: price, 
+      quantity: 1
+  };
+  const miniCart = JSON.parse(localStorage.getItem('miniCartss')) || [];
+  const existingProductIndex = miniCart.findIndex(item => item.id === id);
+  if (existingProductIndex !== -1) {
+      // Nếu sản phẩm đã tồn tại, tăng quantity lên
+      miniCart[existingProductIndex].quantity += 1;
+  } else {
+      // Nếu sản phẩm chưa tồn tại, thêm vào giỏ hàng
+      miniCart.push(product);
+  }
+
+  localStorage.setItem('miniCartss', JSON.stringify(miniCart));
+
+  // Cập nhật số lượng sản phẩm trong mini cart
+
+  const itemCount = document.querySelector('.minicart--item-count');
+  itemCount.textContent = miniCart.length;
+}
+

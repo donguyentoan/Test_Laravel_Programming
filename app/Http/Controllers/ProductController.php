@@ -1,10 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Product;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\HandlerStack;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Requests\ProductRequest;
 use App\Validation\ProductValidation;
+use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -28,79 +31,97 @@ class ProductController extends Controller
         $product = $this->productService->edit($id);
         return view('admin.product.edit' , ["product" => $product]);
     }
-    public function addProduct(ProductRequest $request){
+    public function addProduct(ProductRequest $request)
+    {
         $data = $request->validated();
-        $data = $request->all();
-        // if ($validate->fails()) {
-        //     $errors = $validate->errors();
-        //     throw new ValidationException($validate);
-        // }
-            $existingProduct = $this->productService->findByName($request->input('name'));
-            if ($existingProduct) {
-                return redirect('/productList')->with('success', 'Product Already Exists');
-            }     
-                $fileName = null;
-                if ($request->hasFile('image') && $request->file('image')->isValid()) {
-                    // Handle file here
-                    $file = $request->file('image');
-                    $fileName = time(). $file->getClientOriginalName();
-                    $path = 'upload';
-                    $file->move($path, $fileName);
-                }  
-                $status = 0 ;
-                if($request->input('status')=="on") {
-                    $status = 1;
-                }
-               
-                $dataProduct = [
-                    'name' => $request->input('name'),
-                    'manufacturer' => $request->input('manufacturer'),
-                    'image' => $fileName,
-                    'price' => $request->input('price'),
-                    'model' => $request->input('model'),
-                    'engine_capacity' => $request->input('engine_capacity'),
-                    'tags' => $request->input('tags') ? json_encode(explode(',', $request->input('tags'))) : null,
-                    'is_active' => $status,
-                ];
-
-                
-                $product = $this->productService->addProduct($dataProduct);
-                // $this->indexProduct($product);
-                // $product = new Product();
-                // $product->name = ;
-                // $product->manufacturer = 
-                // $product->image = $fileName;
-                // $product->price = 
-                // $product->model = $request->input('model');
-                // $product->engine_capacity = $request->input('engine_capacity');
-                // $product->tags = $request->input('tags') ? json_encode(explode(',', $request->input('tags'))) : null;
-                // $product->is_active = $status;
-                // $this->indexProduct($product);
-                // $product->save();
-
-            return redirect('/dashboard/product')->with('success', 'Add successfully');
-        }
-        
-    private function indexProduct($product)
-        {
-            $client = app('elasticsearch');
-            $params = [
-                'index' => 'products',
-                'id'    => $product->id,
-                'body'  => [
-                    'name' => $product->name,
-                    'manufacturer' => $product->manufacturer,
-                    'price' => $product->price,
-                    'image' => $product->image,
-                    'model' => $product->model,
-                    'engine_capacity' => $product->engine_capacity,
-                    'tags' => $product->tags,
-                    'is_active' => $product->is_active
-                ],
-            ];
     
-            $client->index($params);
+        // Kiểm tra xem sản phẩm đã tồn tại hay chưa
+        $existingProduct = $this->productService->findByName($request->input('name'));
+        if ($existingProduct) {
+            return redirect('/productList')->with('success', 'Product Already Exists');
+        }     
+    
+        $fileName = null;
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = 'upload';
+            $file->move($path, $fileName);
+        }  
+    
+        // Xử lý trạng thái
+        $status = $request->input('status') === "on" ? 1 : 0;
+    
+        // Dữ liệu sản phẩm
+        $dataProduct = [
+            'name' => $request->input('name'),
+            'manufacturer' => $request->input('manufacturer'),
+            'image' => $fileName,
+            'price' => $request->input('price'),
+            'model' => $request->input('model'),
+            'engine_capacity' => $request->input('engine_capacity'),
+            'tags' => $request->input('tags') ? json_encode(explode(',', $request->input('tags'))) : null,
+            'is_active' => $status,
+        ];   
+    
+        // Thêm sản phẩm vào database
+        $product = $this->productService->addProduct($dataProduct);
+    
+        // Index sản phẩm vào Elasticsearch
+        $reponse = $this->indexProduct($product);
+       
+      return redirect('/dashboard/product')->with('success', 'Add successfully');
+    }
+
+    public function indexProduct(Product $product)
+    {
+        $client = app('elasticsearch');
+        $dataProduct = [
+            'name' => $product->name,
+            'manufacturer' => $product->manufacturer,
+            'image' => $product->image,
+            'price' => $product->price,
+            'model' => $product->model,
+            'engine_capacity' => $product->engine_capacity,
+            'tags' => json_encode($product->model),
+            'is_active' => true, // sử dụng false cho giá trị boolean
+        ];
+        $params = [
+            'index' => 'my_index',
+            'type' => '_doc', 
+            'id' =>  $product->id,
+            'body'  => $dataProduct,
+        ];
+
+        
+        try {
+            $response = $client->index($params);
+            if ($response['result'] === 'created') {
+                return response()->json(['message' => 'Product added successfully.', 'id' => $response['_id']], 201);
+            } else {
+                return response()->json(['message' => 'Failed to add product.'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }  
+        
+    }
+    
+     
+  
+
+    
+    private function indexExists($indexName, $client)
+    {
+        try {
+            return $client->indices()->exists(['index' => $indexName]);
+        } catch (\Exception $e) {
+            \Log::error('Error checking index existence: ' . $e->getMessage());
+            return false;
         }
+    }
+    
+        
 
 
 
@@ -172,42 +193,46 @@ class ProductController extends Controller
             
         }
 
-    public function delete($id){
+        public function delete($id)
+        {
             $product = $this->productService->edit($id);
-            if ($product) {
-                $product->delete();
-                $oldPhoto = $product->image;
-                if ($oldPhoto != null && file_exists('upload/' . $oldPhoto)) {
-                    unlink('upload/' . $oldPhoto);
-                }  
-                return redirect("/dashboard/product")->with('success', 'Xóa thành công');
-            } else {
-                // Nếu sản phẩm với ID cụ thể không tồn tại, chuyển hướng với thông báo lỗi.
+            if (!$product) {
                 return redirect('/dashboard/product')->with('error', 'Lỗi! Không tìm thấy sản phẩm');
             }
+            $product->delete();
+            $oldPhoto = $product->image;
+            if ($oldPhoto !== null && file_exists('upload/' . $oldPhoto)) {
+                unlink('upload/' . $oldPhoto);
+            }
+            return redirect("/dashboard/product")->with('success', 'Xóa thành công');
         }
-    public function search(Request $request)
-    {
-        $client = app('elasticsearch');
-
-        $params = [
-            'index' => 'products',
-            'body'  => [
-                'query' => [
-                    'multi_match' => [
-                        'query' => $request->input('query'),
-                        'fields' => ['name', 'description'],
+        
+    
+        public function search(Request $request)
+        {
+           
+            $client = app('elasticsearch');
+    
+            $params = [
+                'index' => 'my_index',
+                'body'  => [
+                    'query' => [
+                        'multi_match' => [
+                            'query' => $request->input('query'),
+                            'fields' => ['name', 'description'],
+                        ],
                     ],
                 ],
-            ],
-        ];
-
-        $response = $client->search($params);
-        $products = collect($response['hits']['hits'])->map(function ($hit) {
-            return (object) $hit['_source'];
-        });
-
-        return view('products.index', compact('products'));
-    }
+            ];
+    
+            $response = $client->search($params);
+            $products = collect($response['hits']['hits'])->map(function ($hit) {
+                return (object) [
+                    'id' => $hit['_id'], // Lấy ID
+                    'source' => $hit['_source'] // Các trường khác
+                ];
+            });
+            return view('customer.result.searchResult', compact('products'));
+        }
 
     }

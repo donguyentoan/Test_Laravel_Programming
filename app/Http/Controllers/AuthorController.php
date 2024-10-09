@@ -67,7 +67,6 @@ class AuthorController extends Controller
         //     $errors = $validate->errors();
         //     throw new ValidationException($validate);
         // }
-
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             if (auth()->user()->role_id == 1) {

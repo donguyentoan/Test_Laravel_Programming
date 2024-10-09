@@ -43,6 +43,4 @@ Route::get('/dashboard/product/delete/{id}' , [ProductController::class ,'delete
 
 Route::post('/update/product' , [ProductController::class ,'store']);
 
-
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
-

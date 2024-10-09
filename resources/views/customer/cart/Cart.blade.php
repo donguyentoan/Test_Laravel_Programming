@@ -127,7 +127,7 @@ updateCart.addEventListener('click' , function(){
         miniCart[index].quantity = parseInt(el.textContent);
     });
     localStorage.setItem('miniCartss', JSON.stringify(miniCart));
-  
+    renderCart();
 })
 
 function removeCart(id) {
@@ -143,6 +143,7 @@ function removeCart(id) {
     } else {
         alert('Item not found in cart'); // Optional: Feedback if item is not found
     }
+    renderCart();
 }
 
 function renderCart() {

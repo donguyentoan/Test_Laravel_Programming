@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+
+
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\ServiceProvider;
+
 
 class ElasticsearchServiceProvider extends ServiceProvider
 {
@@ -11,7 +14,7 @@ class ElasticsearchServiceProvider extends ServiceProvider
     {
         $this->app->singleton('elasticsearch', function ($app) {
             return ClientBuilder::create()
-                ->setHosts(config('elasticsearch.hosts'))
+                ->setHosts(['http://89.233.104.235:9200']) 
                 ->build();
         });
     }

@@ -17,6 +17,7 @@ class HomeController extends Controller
         return view('customer.home.index' , ["products" => $product]);
     } 
     public function detail($id){
-        return view('customer.home.detailProduct');
+        $product = $this->productService->edit($id);
+        return view('customer.home.detailProduct' , ["product" => $product]);
     }
 }
