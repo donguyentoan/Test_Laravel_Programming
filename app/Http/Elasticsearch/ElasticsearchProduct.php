@@ -1,9 +1,12 @@
 <?php
 namespace App\Http\Elasticsearch;
 
+use Exception;
+use App\Models\Product;
+
 class ElasticsearchProduct 
 {
-    public static  $index = "products";
+    public static  $index = 'products';
 
     public function indexProduct(Product $product)
     {
@@ -19,13 +22,11 @@ class ElasticsearchProduct
             'is_active' => true, 
         ];
         $params = [
-            'index' => $index,
+            'index' => self::$index,
             'type' => '_doc', 
             'id' =>  $product->id,
             'body'  => $dataProduct,
         ];
-
-        
         try {
             $response = $client->index($params);
             if ($response['result'] === 'created') {
@@ -33,7 +34,7 @@ class ElasticsearchProduct
             } else {
                 return response()->json(['message' => 'Failed to add product.'], 500);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }  
         
@@ -45,7 +46,7 @@ class ElasticsearchProduct
         $client = app('elasticsearch');
         
         $params = [
-            'index' => $index,
+            'index' => self::$index,
             'type' => '_doc', 
             'id' => $id,
         ];
@@ -78,14 +79,13 @@ class ElasticsearchProduct
             'is_active' => true, 
         ];
         $params = [
-            'index' =>  $index,
+            'index' =>  self::$index,
             'id'    => $product->id,
             'body'  => $dataProduct,
             'type' => '_doc',
         ];
         try {
             $response = $client->index($params); 
-            
             if ($response['result'] === 'updated') {
                 return response()->json(['message' => 'Product updated successfully.'], 200);
             } else {

@@ -16,14 +16,14 @@ class SyncProductsWithElasticsearch extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'sync:products-elasticsearch';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Sync products with Elasticsearch';
 
     /**
      * Create a new command instance.

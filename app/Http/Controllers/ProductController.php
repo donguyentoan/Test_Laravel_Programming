@@ -61,14 +61,13 @@ class ProductController extends Controller
             'tags' => $request->input('tags') ? json_encode(explode(',', $request->input('tags'))) : null,
             'is_active' => $status,
         ];   
-    
         $product = $this->productService->addProduct($dataProduct);
-    
-        
-   
-        $reponse = $this->indexProduct($product);
-       
-      return redirect('/dashboard/product')->with('success', 'Add successfully');
+        // $this->elasticsearchProduct->addProduct($dataProduct);   
+        $reponse = $this->elasticsearchProduct->indexProduct($product);
+        $statusCode = $reponse->getStatusCode();
+        if($statusCode == 201 && $product != null ){
+            return redirect('/dashboard/product')->with('success', 'Add successfully');
+        } 
     }
 
     
@@ -126,8 +125,7 @@ class ProductController extends Controller
                             'is_active' => $status,
                         ];
                         $product = $this->productService->store($product->id , $data);
-                    
-                       $reponse =  $this->updateProduct($product);
+                       $reponse = $this->elasticsearchProduct->updateProduct($product);
                        $statusCode = $reponse->getStatusCode();
                        if($statusCode == 200){
                             return redirect('/dashboard/product')->with('success', 'Edit successfully'); 
@@ -141,15 +139,16 @@ class ProductController extends Controller
                 return redirect('/dashboard/product')->with('error', 'Lỗi! Không tìm thấy sản phẩm');
             }
             $product->delete();
-            $this->deleteProduct($id);
             $oldPhoto = $product->image;
             if ($oldPhoto !== null && file_exists('upload/' . $oldPhoto)) {
                 unlink('upload/' . $oldPhoto);
             }
-            return redirect("/dashboard/product")->with('success', 'Xóa thành công');
+            $reponse = $this->elasticsearchProduct->deleteProduct($id);
+            $statusCode = $reponse->getStatusCode();
+            if($statusCode == 500){
+                 return redirect('/dashboard/product')->with('success', 'Delete successfully'); 
+            } 
         }
-        
-    
         public function search(Request $request)
         {
             $client = app('elasticsearch');
@@ -173,6 +172,30 @@ class ProductController extends Controller
             });
             return view('customer.result.searchResult', compact('products'));
         }
+
+        // public function deleteProduct($id)
+        // {
+           
+        //     $client = app('elasticsearch');
+            
+        //     $params = [
+        //         'index' => 'products',
+        //         'type' => '_doc', 
+        //         'id' => $id,
+        //     ];
+        
+         
+        //     try {
+        //         $response = $client->delete($params);
+        //         if ($response['result'] === 'deleted') {
+        //             return response()->json(['message' => 'Product deleted successfully.'], 200);
+        //         } else {
+        //             return response()->json(['message' => 'Failed to delete product.'], 500);
+        //         }
+        //     } catch (\Exception $e) {
+        //         return response()->json(['error' => $e->getMessage()], 500);
+        //     }
+        // }
 
     }
 
