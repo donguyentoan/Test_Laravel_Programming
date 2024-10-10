@@ -14,7 +14,7 @@ class ElasticsearchServiceProvider extends ServiceProvider
     {
         $this->app->singleton('elasticsearch', function ($app) {
             return ClientBuilder::create()
-                ->setHosts(['http://89.233.104.235:9200']) 
+                ->setHosts([env('ELASTICSEARCH_HOST')]) // Sử dụng env để lấy giá trị từ .env
                 ->build();
         });
     }

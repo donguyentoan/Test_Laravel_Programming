@@ -10,7 +10,7 @@
         <a class="mr-5 hover:text-gray-900">CONTACT</a>
         @auth
         <a href="/login" class="mr-5 hover:text-gray-900">{{ auth()->user()->name }}</a>
-        <a  href="/logout" class="mr-5 hover:text-gray-900">LOGOUT1</a>
+        <a  href="/logout" class="mr-5 hover:text-gray-900">LOGOUT</a>
         @else
             <a href="/login" class="mr-5 hover:text-gray-900">LOGIN</a>
         @endauth

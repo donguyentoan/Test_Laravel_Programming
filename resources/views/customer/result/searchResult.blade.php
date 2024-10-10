@@ -1,7 +1,15 @@
-@extends('customer.layout.app')
 
-@section('content')
-<section class="text-gray-600 body-font">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <section class="text-gray-600 body-font">
     <div class="container   mx-auto">
        <div class="pt-4">
           <h1 class="text-2xl py-6 text-blue-500 font-bold ">Ô TÔ</h1>
@@ -16,9 +24,9 @@
                 <h2 class="text-gray-900 title-font text-lg font-medium">{{ $product->source['name'] }}</h2>
                 <p class="mt-1">${{ $product->source['price'] }}</p>
                 <div>
-                  {{-- <button onclick="addToMiniCart({{$value->id}}, {{$value->price}}, '{{$value->name}}', '{{$value->image}}')" class="addtocartButton w-full p-2 bg-gray-400 rounded-md text-white">
+                  <button onclick="addToMiniCart({{$product->id}}, {{ $product->source['price'] }}, '{{ $product->source['name'] }}', '{{$product->source['image'] }}')" class="addtocartButton w-full p-2 bg-gray-400 rounded-md text-white">
                     Add To Cart
-                </button> --}}
+                </button>
                 
                 </div>
               </div>
@@ -66,4 +74,7 @@
 
     </script>
 </section>
-@endsection
+
+</body>
+</html>
+

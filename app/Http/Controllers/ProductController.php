@@ -54,7 +54,7 @@ class ProductController extends Controller
         $dataProduct = [
             'name' => $request->input('name'),
             'manufacturer' => $request->input('manufacturer'),
-            'image' => $fileName,
+            'image' => ($fileName) ? $fileName : " " ,
             'price' => $request->input('price'),
             'model' => $request->input('model'),
             'engine_capacity' => $request->input('engine_capacity'),
@@ -153,7 +153,7 @@ class ProductController extends Controller
         {
             $client = app('elasticsearch');
             $params = [
-                'index' => 'my_index',
+                'index' => 'products',
                 'body'  => [
                     'query' => [
                         'multi_match' => [

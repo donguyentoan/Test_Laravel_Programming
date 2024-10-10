@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,4 +48,6 @@ Route::get('/products/search', [ProductController::class, 'search'])->name('prod
 
 
 Route::get('/elastic/delete/{id}' , [ProductController::class ,'deleteProduct']);
+
+Route::get('/checkout' , [CheckoutController::class ,'index']);
 
