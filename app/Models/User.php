@@ -47,4 +47,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function isAdmin()
+    {
+        return $this->role_id === 1; // Kiểm tra xem role_id có phải là 1 không
+    }
 }

@@ -10,6 +10,7 @@ class ElasticsearchProduct
 
     public function indexProduct(Product $product)
     {
+        
         $client = app('elasticsearch');
         $dataProduct = [
             'name' => $product->name,
@@ -18,7 +19,7 @@ class ElasticsearchProduct
             'price' => $product->price,
             'model' => $product->model,
             'engine_capacity' => $product->engine_capacity,
-            'tags' => json_encode($product->model),
+            'tags' => $product->tags,
             'is_active' => true, 
         ];
         $params = [

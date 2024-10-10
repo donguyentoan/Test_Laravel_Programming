@@ -4,9 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,33 +24,29 @@ use App\Http\Controllers\CheckoutController;
 
 Route::get('/',[HomeController::class , 'home']);
 
-Route::get('/login' , [AuthorController::class ,'login']);
-Route::post('/login' , [AuthorController::class ,'loginUser']);
+Route::get('/login' , [LoginController::class ,'login']);
+Route::post('/login' , [LoginController::class ,'loginUser']);
 Route::get('/cart' , [CartController::class ,'cart']);
-Route::get('/register' , [AuthorController::class ,'register']);
-Route::post('/register' , [AuthorController::class ,'createUser']);
-Route::get('/product/{id}' , [HomeController::class ,'detail']);
+Route::get('/register' , [RegisterController::class ,'register']);
+Route::post('/register' , [RegisterController::class ,'createUser']);
+Route::get('/product/{id}' , [ProductController::class ,'detail']);
 
 Route::get('/dashboard' , [AdminController::class ,'index'])->name('dashboard');
-Route::get('/logout' , [AuthorController::class ,'logout']);
+Route::get('/logout' , [LoginController::class ,'logout']);
+
+Route::get('/dashboard/product' , [AdminController::class ,'indexProduct']);
 
 
-Route::get('/dashboard/product' , [ProductController::class ,'index']);
+Route::get('/addProduct' , [AdminController::class ,'add']);
 
+Route::post('/uploads' , [AdminController::class ,'addProduct']);
 
-Route::get('/addProduct' , [ProductController::class ,'add']);
+Route::get('dashboard/product/edit/{id}' , [AdminController::class ,'edit']);
+Route::get('/dashboard/product/delete/{id}' , [AdminController::class ,'delete']);
 
-Route::post('/uploads' , [ProductController::class ,'addProduct']);
+Route::post('/update/product' , [AdminController::class ,'store']);
 
-Route::get('dashboard/product/edit/{id}' , [ProductController::class ,'edit']);
-Route::get('/dashboard/product/delete/{id}' , [ProductController::class ,'delete']);
-
-Route::post('/update/product' , [ProductController::class ,'store']);
-
-Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
-
-
-Route::get('/elastic/delete/{id}' , [ProductController::class ,'deleteProduct']);
+Route::get('/products/search', [SearchController::class, 'search'])->name('products.search');
 
 Route::get('/checkout' , [CheckoutController::class ,'index']);
 

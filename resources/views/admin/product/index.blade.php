@@ -146,7 +146,7 @@
                                     </div>
                                 </div>
 
-                                <div class="w-full md:w-1/4 p-3 flex items-center justify-end">
+                                <div class="w-full md:w-1/4 p-3 flex items-center justify-end mt-[15px]">
 
                                     <button type="submit" class="btn bg-red-500 text-white  btn-primary w-full p-2 rounded-md">Show Results</button>
                                 </div>
