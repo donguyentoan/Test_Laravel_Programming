@@ -33,7 +33,12 @@ class ProductRepository implements ProductRepositoryInterface
         return $product;
     }
     public function store($id, array $data){
-        return $this->model->where('id', $id)->update($data);
+        // return $this->model->where('id', $id)->update($data)->get();
+        $updated = $this->model->where('id', $id)->update($data);
+        if ($updated) {
+            return $this->model->where('id', $id)->first();
+        }
+    
     }
     public function delete($id){
         return $this->model->destroy($id);

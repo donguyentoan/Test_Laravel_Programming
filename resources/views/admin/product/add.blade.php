@@ -63,8 +63,8 @@
                     <input type="text" id="name" name="manufacturer"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
                         placeholder="Nhập tên sản phẩm" required>
-                    @if ($errors->has('name'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('name') }}</p>
+                    @if ($errors->has('manufacturer'))
+                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('manufacturer') }}</p>
                     @endif
 
                 </div>
@@ -73,8 +73,8 @@
                     <input type="text" id="name" name="model"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
                         placeholder="Nhập tên sản phẩm" required>
-                    @if ($errors->has('name'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('name') }}</p>
+                    @if ($errors->has('model'))
+                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('model') }}</p>
                     @endif
 
                 </div>
@@ -85,8 +85,8 @@
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
                         placeholder="Nhập mô tả sản phẩm" required>
 
-                    @if ($errors->has('description'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('description') }}</p>
+                    @if ($errors->has('engine_capacity'))
+                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('engine_capacity') }}</p>
                     @endif
                 </div>
                 <div class="mb-6">
@@ -96,19 +96,19 @@
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
                         placeholder="Nhập mô tả sản phẩm" required>
 
-                    @if ($errors->has('description'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('description') }}</p>
+                    @if ($errors->has('tags'))
+                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('tags') }}</p>
                     @endif
                 </div>
                 <div class="mb-6">
                     <label for="description"
                         class="block mb-2 text-sm font-medium text-gray-900 text-black">price</label>
-                    <input type="text" id="description" name="price"
+                    <input type="text" id="price" name="price"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
                         placeholder="Nhập mô tả sản phẩm" required>
 
-                    @if ($errors->has('description'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('description') }}</p>
+                    @if ($errors->has('price'))
+                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('price') }}</p>
                     @endif
                 </div>
                 <div class="mb-6">
@@ -122,14 +122,7 @@
                         </div>
                       
                     </div>
-                 
-                    @if ($errors->has('description'))
-                    <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('description') }}</p>
-                    @endif
                 </div>
-
-
-              
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-blue-700 focus:ring-blue-800">Add
                     Product</button>

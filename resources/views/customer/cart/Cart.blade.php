@@ -21,12 +21,10 @@
                         </div>
                         <div class="flex justify-between">
                             <button class="bg-red-500 p-2 rounded-xl text-white font-medium m-4 ">Go Back</button>
-                            <button class="updateCart bg-blue-500 p-2 rounded-xl text-white font-medium m-4 ">Update Cart</button>
+                            <button class="updateCart hidden bg-blue-500 p-2 rounded-xl text-white font-medium m-4 ">Update Cart</button>
                         </div>
                        
-                        
-                        
-                        <!-- Repeat cart-item div for more products -->
+                       
                     </div>
                     
                 </div>
@@ -58,7 +56,7 @@
     </div>
 </div>
 <script>
-       
+       renderCart();
        const dataCart = JSON.stringify(miniCart); // This should be an array, not a JSON string
 const listCart = document.querySelector('.listCart'); // Corrected the spelling from querySlector to querySelector
 let vuivui = ''; // Use let for vuivui to allow reassignment
@@ -91,59 +89,100 @@ miniCart.forEach(element => { // Iterate over miniCart directly, not dataCart
 listCart.innerHTML = vuivui;
 
 
-const increase = document.querySelectorAll('.increase');
-const decrease = document.querySelectorAll('.decrease');
-
-// Loop through all quantity fields and add click events
-increase.forEach((item, index) => {
-    item.addEventListener('click', function() {
-        // Get the current quantity span
-        let number_quantity = document.querySelectorAll('.number_quantity')[index];
-        
-        // Convert the text content to a number and increment it
-        let currentVal = parseInt(number_quantity.textContent);
-        number_quantity.textContent = currentVal + 1;
-    });
-});
-
-decrease.forEach((item, index) => {
-    item.addEventListener('click', function() {
-        // Get the current quantity span
-        let number_quantity = document.querySelectorAll('.number_quantity')[index];
-        
-        // Convert the text content to a number and decrement it (with a minimum of 1)
-        let currentVal = parseInt(number_quantity.textContent);
-        if (currentVal > 1) {
-            number_quantity.textContent = currentVal - 1;
-        }
-    });
-});
 
 const updateCart = document.querySelector('.updateCart');
-let number_quantity = document.querySelectorAll('.number_quantity');
-updateCart.addEventListener('click' , function(){
+
+function bindQuantityChangeEvents() {
+
+    let increase = document.querySelectorAll('.increase'); 
+    let decrease = document.querySelectorAll('.decrease'); 
+    let number_quantity = document.querySelectorAll('.number_quantity'); 
+
+    increase.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            updateCart.style.display = 'block';
+            let currentVal = parseInt(number_quantity[index].textContent);
+            number_quantity[index].textContent = currentVal + 1;
+          
+        });
+    });
+
+    decrease.forEach((item, index) => {
+        item.addEventListener('click', function() {
+            updateCart.style.display = 'block';
+            let currentVal = parseInt(number_quantity[index].textContent);
+            if (currentVal > 1) {
+                number_quantity[index].textContent = currentVal - 1;
+                
+            }
+           
+        });
+    });
+}
+
+// Event listener for updating the cart
+updateCart.addEventListener('click', function() {
+    let number_quantity = document.querySelectorAll('.number_quantity');
     number_quantity.forEach((el, index) => {
-        // Match the index of the element in the number_quantity to the miniCart array
         miniCart[index].quantity = parseInt(el.textContent);
     });
     localStorage.setItem('miniCartss', JSON.stringify(miniCart));
     renderCart();
-})
+    bindQuantityChangeEvents();  // Gán lại sự kiện sau khi render
+});
+
+// Initial binding of increase/decrease buttons
+bindQuantityChangeEvents();
 
 function removeCart(id) {
     // Find the index of the item with the specified id in miniCart
-    const index = miniCart.findIndex(item => item.id === id);
-    
-    // If the item is found, remove it
+    if(id){
+
+        Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+        if (result.isConfirmed) {
+            const index = miniCart.findIndex(item => item.id === id);
     if (index !== -1) {
         miniCart.splice(index, 1); // Remove the item from the cart
         localStorage.setItem('miniCartss', JSON.stringify(miniCart)); // Update local storage
         renderCart(); // Update the cart UI to reflect the changes
         
     } else {
-        alert('Item not found in cart'); // Optional: Feedback if item is not found
+        Swal.fire({
+        title: "Item not found in cart",
+        showClass: {
+            popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+            `
+        },
+        hideClass: {
+            popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+            `
+        }
+        });
     }
     renderCart();
+            Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+            });
+        }
+        });
+    }
+    
 }
 
 function renderCart() {

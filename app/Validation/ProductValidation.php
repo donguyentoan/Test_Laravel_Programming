@@ -10,15 +10,15 @@ class ProductValidation{
         $rules = [
             'name' => 'required|max:255',
             'manufacturer' => 'required|max:1000',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:3072',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif|max:3072',
             'model' => 'required|numeric',
             'engine_capacity' => 'required',
             'tags' => 'required',
             'price' => 'required|numeric',
         ];
-    
         $messages = [
             'name.required' => 'The product name is required.',
+            'image.required' => 'image is required.',
             'name.max' => 'The product name may not be greater than 255 characters.',
             'manufacturer.required' => 'The manufacturer field is required.',
             'manufacturer.max' => 'The manufacturer may not exceed 1000 characters.',

@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
                 $table->string('manufacturer')->nullable();
                 $table->string('model')->nullable();
                 $table->string('engine_capacity')->nullable();
-                $table->decimal('price', 10, 2);
+                $table->double('price');
                 $table->json('tags')->nullable(); // For storing tags like 'red', '5-door'
                 $table->string('image');
                 $table->boolean('is_active')->default(0); // Admin activation
