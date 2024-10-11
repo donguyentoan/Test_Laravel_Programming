@@ -4,25 +4,24 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
-{
+class ProductRequest extends FormRequest {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
+    * Determine if the user is authorized to make this request.
+    *
+    * @return bool
+    */
+
+    public function authorize() {
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
+    * Get the validation rules that apply to the request.
+    *
+    * @return array
+    */
+
+    public function rules() {
         return [
             'name' => 'required|max:255',
             'manufacturer' => 'required|max:1000',
@@ -34,8 +33,7 @@ class ProductRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
+    public function messages() {
         return [
             'name.required' => 'The product name is required.',
             'name.max' => 'The product name may not be greater than 255 characters.',

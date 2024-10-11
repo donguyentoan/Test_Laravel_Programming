@@ -2,11 +2,10 @@
 namespace App\Validation;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Support\Facades\Validator;
-class ProductValidation{
-   
 
-    public function validateProduct(array $data)
-    {
+class ProductValidation {
+
+    public function validateProduct( array $data ) {
         $rules = [
             'name' => 'required|max:255',
             'manufacturer' => 'required|max:1000',
@@ -32,7 +31,7 @@ class ProductValidation{
             'price.required' => 'The price field is required.',
             'price.numeric' => 'The price must be a valid number.',
         ];
-    
-        return Validator::make($data, $rules, $messages);
+
+        return Validator::make( $data, $rules, $messages );
     }
 }

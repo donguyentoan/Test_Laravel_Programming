@@ -234,31 +234,98 @@ setInterval(() => {
   fakeUsersCount()
 }, 1000)
 
-
 function addToMiniCart(id, price, name, image) {
-
   const product = {
-      id: id,
-      name: name,
-      image: image,
-      price: price, 
-      quantity: 1
+    id: id,
+    name: name,
+    image: image,
+    price: price,
+    quantity: 1
   };
+
+  // Lấy mini cart từ localStorage hoặc khởi tạo mảng rỗng
   const miniCart = JSON.parse(localStorage.getItem('miniCartss')) || [];
   const existingProductIndex = miniCart.findIndex(item => item.id === id);
+
   if (existingProductIndex !== -1) {
-      // Nếu sản phẩm đã tồn tại, tăng quantity lên
-      miniCart[existingProductIndex].quantity += 1;
+    miniCart[existingProductIndex].quantity += 1;
+    updateCartInDB(product.id , miniCart[existingProductIndex].quantity )
   } else {
-      // Nếu sản phẩm chưa tồn tại, thêm vào giỏ hàng
-      miniCart.push(product);
+    miniCart.push(product);
+    addCartInDB(product.id, product.name, product.image, product.price, product.quantity); // Gọi API lưu vào DB
   }
-
   localStorage.setItem('miniCartss', JSON.stringify(miniCart));
-
-  // Cập nhật số lượng sản phẩm trong mini cart
-
   const itemCount = document.querySelector('.minicart--item-count');
   itemCount.textContent = miniCart.length;
 }
+
+function updateCartInDB(productId, quantity){
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Lấy CSRF token từ thẻ meta
+  fetch('/update/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken // Sử dụng CSRF token
+    },
+    body: JSON.stringify({
+      product_id: productId,
+      quantity: quantity
+    })
+  })
+    .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+    .then(data => {
+      if (data.code == 201) {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Add To Cart Success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Lỗi khi kết nối tới server.");
+    });
+}
+
+function addCartInDB(productId, name, image, price, quantity) {
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Lấy CSRF token từ thẻ meta
+  fetch('/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken // Sử dụng CSRF token
+    },
+    body: JSON.stringify({
+      product_id: productId,
+      name: name,
+      image: image,
+      price: price,
+      quantity: quantity
+    })
+  })
+    .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+    .then(data => {
+      if (data.code == 201) {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Add To Cart Success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Lỗi khi kết nối tới server.");
+    });
+}
+
+
+
 

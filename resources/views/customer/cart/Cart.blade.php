@@ -127,8 +127,11 @@ updateCart.addEventListener('click', function() {
     let number_quantity = document.querySelectorAll('.number_quantity');
     number_quantity.forEach((el, index) => {
         miniCart[index].quantity = parseInt(el.textContent);
+        const productId = miniCart[index].id;
+        updateCartInDBtoCart(productId , miniCart[index].quantity);
     });
     localStorage.setItem('miniCartss', JSON.stringify(miniCart));
+
     renderCart();
     bindQuantityChangeEvents();  // Gán lại sự kiện sau khi render
 });
@@ -152,9 +155,11 @@ function removeCart(id) {
         if (result.isConfirmed) {
             const index = miniCart.findIndex(item => item.id === id);
     if (index !== -1) {
-        miniCart.splice(index, 1); // Remove the item from the cart
-        localStorage.setItem('miniCartss', JSON.stringify(miniCart)); // Update local storage
-        renderCart(); // Update the cart UI to reflect the changes
+        miniCart.splice(index, 1); 
+        localStorage.setItem('miniCartss', JSON.stringify(miniCart));
+        removeCartInDB(id);
+        loadMiniCart();
+        renderCart(); 
         
     } else {
         Swal.fire({
@@ -187,6 +192,37 @@ function removeCart(id) {
     
 }
 
+function removeCartInDB(cartId,) {
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  fetch('/del/cart', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': csrfToken // Sử dụng CSRF token
+      },
+      body: JSON.stringify({
+          cart_id: cartId,
+      })
+  })
+  .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+  .then(data => {
+      if(data.code == 201){
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "Remove Cart Success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+  })
+  .catch(error => {
+      console.error('Error:', error);
+      alert("Lỗi khi kết nối tới server.");
+  });
+}
+
 function renderCart() {
     const listCart = document.querySelector('.listCart');
     listCart.innerHTML = ''; // Clear current cart UI
@@ -215,7 +251,44 @@ function renderCart() {
         `;
     });
 }
+function loadMiniCart(){
+    const miniCart = JSON.parse(localStorage.getItem('miniCartss')) || [];
+    const itemCount = document.querySelector('.minicart--item-count');
+    itemCount.textContent = miniCart.length;
 
+}
+
+function updateCartInDBtoCart(productId, quantity){
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Lấy CSRF token từ thẻ meta
+  fetch('/update/cart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken // Sử dụng CSRF token
+    },
+    body: JSON.stringify({
+      product_id: productId,
+      quantity: quantity
+    })
+  })
+    .then(response => response.json()) // Chuyển đổi phản hồi sang JSON
+    .then(data => {
+      if (data.code == 201) {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: " Update Cart Success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+      }
+
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Lỗi khi kết nối tới server.");
+    });
+}
                 
 </script>
 @endsection

@@ -51,6 +51,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->role_id === 1; // Kiểm tra xem role_id có phải là 1 không
+        return $this->role_id === 1; 
     }
 }

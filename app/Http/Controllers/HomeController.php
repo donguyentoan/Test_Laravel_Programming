@@ -3,17 +3,18 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
-class HomeController extends Controller
-{
+
+class HomeController extends Controller {
     protected $productService;
-    public function __construct(ProductService $productService )
-    {
+
+    public function __construct( ProductService $productService ) {
         $this->productService = $productService;
-      
+
     }
-    public function home(){
+
+    public function home() {
         $product = $this->productService->findByActive();
-        return view('customer.home.index' , ["products" => $product]);
-    } 
-   
+        return view( 'customer.home.index', [ 'products' => $product ] );
+    }
+
 }

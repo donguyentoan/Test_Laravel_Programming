@@ -12,14 +12,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
-class AuthorController extends Controller
-{
+class AuthorController extends Controller {
     protected $userService;
     protected $authorValidation;
-    public function __construct(UserService $userService , AuthorValidation $authorValidation )
-    {
+
+    public function __construct( UserService $userService, AuthorValidation $authorValidation ) {
         $this->userService = $userService;
         $this->authorValidation = $authorValidation;
     }
-  
 }

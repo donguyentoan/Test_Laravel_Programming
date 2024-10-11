@@ -34,9 +34,13 @@
   </header>
 
   <script>
-     const miniCart = JSON.parse(localStorage.getItem('miniCartss')) || [];
+ 
+ 
+      const miniCart = JSON.parse(localStorage.getItem('miniCartss')) || [];
                 const itemCount = document.querySelector('.minicart--item-count');
                 itemCount.textContent = miniCart.length;
+  
+   
                 
     const search_item = document.querySelector('.search_item');
     const searchProduct = document.querySelector('.searchProduct');
