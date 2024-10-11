@@ -7,7 +7,7 @@ use App\Repositories\ProductRepositoryInterface;
 class ProductRepository implements ProductRepositoryInterface {
     protected $model;
 
-    public function __construct( Product $product )
+    public function __construct(Product $product)
     {
         $this->model = $product;
     }
@@ -17,12 +17,12 @@ class ProductRepository implements ProductRepositoryInterface {
         return $this->model->all();
     }
 
-    public function edit( $id )
+    public function edit($id)
     {
         return $this->model->find( $id );
     }
 
-    public function addProduct( array $data )
+    public function addProduct(array $data)
     {
         $product = new Product();
         $product->name = $data[ 'name' ] ?? null;
@@ -37,7 +37,7 @@ class ProductRepository implements ProductRepositoryInterface {
         return $product;
     }
 
-    public function store( $id, array $data )
+    public function store($id, array $data)
     {
         $updated = $this->model->where( 'id', $id )->update( $data );
         if ( $updated ) {
@@ -45,12 +45,12 @@ class ProductRepository implements ProductRepositoryInterface {
         }
     }
 
-    public function delete( $id )
+    public function delete($id)
     {
         return $this->model->destroy( $id );
     }
 
-    public function findByName( $name )
+    public function findByName($name)
     {
         return $this->model->where( 'name', $name )->first();
     }

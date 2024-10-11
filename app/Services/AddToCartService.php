@@ -10,18 +10,18 @@ class AddToCartService {
         $this->addtocartRepository = $addtocartRepository;
     }
 
-    public function addCart( array $data )
+    public function addCart(array $data)
     {
-        return $this->addtocartRepository->addCart( $data );
+        return $this->addtocartRepository->addCart($data);
     }
 
-    public function RemoveCart( $id )
+    public function RemoveCart($id)
     {
-        return $this->addtocartRepository->RemoveCart( $id );
+        return $this->addtocartRepository->RemoveCart($id);
     }
 
-    public function  UpdateCart( $id, $quantity )
+    public function  UpdateCart($id, $quantity)
     {
-        return $this->addtocartRepository->UpdateCart( $id, $quantity );
+        return $this->addtocartRepository->UpdateCart($id, $quantity);
     }
 }

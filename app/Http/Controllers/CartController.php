@@ -7,7 +7,7 @@ use App\Services\AddToCartService;
 class CartController extends Controller {
     protected $addtocartService;
 
-    public function __construct( AddToCartService $addtocartService )
+    public function __construct(AddToCartService $addtocartService)
     {
         $this->addtocartService = $addtocartService;
     }
@@ -17,7 +17,7 @@ class CartController extends Controller {
         return view( 'customer.cart.Cart' );
     }
 
-    public function saveCart( Request $request )
+    public function saveCart(Request $request)
     {
         $data = [
             'id_product' =>  $request->input( 'product_id' ),
@@ -32,7 +32,7 @@ class CartController extends Controller {
         ], 200 );
     }
 
-    public function removeCart( Request $request )
+    public function removeCart(Request $request)
     {
         $this->addtocartService->RemoveCart( $request->input( 'cart_id' ) );
         return response()->json( [
@@ -40,7 +40,7 @@ class CartController extends Controller {
         ], 200 );
     }
 
-    public function updateCart( Request $request )
+    public function updateCart(Request $request)
     {
         return response()->json( [
             'code' => 201,

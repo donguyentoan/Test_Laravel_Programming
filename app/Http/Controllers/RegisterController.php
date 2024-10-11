@@ -3,20 +3,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\UserService;
-use App\Validation\AuthorValidation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\RegisterRequest;
+
 
 class RegisterController extends Controller {
 
     protected $userService;
     protected $authorValidation;
 
-    public function __construct( UserService $userService, AuthorValidation $authorValidation )
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->authorValidation = $authorValidation;
     }
 
     public function register()
@@ -24,7 +22,7 @@ class RegisterController extends Controller {
         return view( 'customer.author.register' );
     }
 
-    public function createUser(Request $request )
+    public function createUser(Request $request)
     {
         $data = $request->all();
         if ( $data[ 'password' ] == $request->input( 'cpassword' ) ) {

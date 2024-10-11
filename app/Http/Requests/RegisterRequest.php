@@ -28,6 +28,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users',
             'name' => 'required|string|min:6|max:15|unique:users|regex:/^[a-zA-Z0-9_.-]*[a-zA-Z][a-zA-Z0-9_.-]*$/',
             'phone' => 'required|numeric|min:10',
+            'cpassword' => 'required',
             'password' => ['required',
                 Password::min(8)
                     ->letters()
@@ -43,6 +44,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'phone.required' => 'The phone number is required.',
+            'cpassword.required' => 'The cpassword is required.',
             'phone.numeric' => 'The phone number must be a valid number.',
             'phone.min' => 'The phone number must be at least 10 digits long.',
             'email.unique' => 'Email đã cung cấp đã tồn tại.',

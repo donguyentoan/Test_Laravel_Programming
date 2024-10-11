@@ -35,16 +35,15 @@ class AdminController extends Controller {
     {
         return view( 'admin.product.add' );
     }
-    public function edit( $id )
+    public function edit($id)
     {
         $product = $this->productService->edit( $id );
         return view( 'admin.product.edit', [
             'product' => $product
         ] );
     }
-    public function addProduct( Request $request )
+    public function addProduct(Request $request)
     {
-        $data = $request->validated();
         if($request->file('image') == null){
             return redirect('/productList')->with('error', 'The product image is required.');
         }
@@ -80,9 +79,8 @@ class AdminController extends Controller {
         }
     }
 
-    public function store( Request $request )
+    public function store(Request $request)
     {
-        $data = $request->validated();
         $data = $request->all();
         $product = $this->productService->edit( $data[ 'id' ] );
         $status = $request->input( 'status' ) === 'on' ? 1 : 0;
@@ -124,7 +122,7 @@ class AdminController extends Controller {
         }
     }
 
-    public function delete( $id )
+    public function delete($id)
     {
         $product = $this->productService->edit( $id );
         if ( !$product ) {

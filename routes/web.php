@@ -56,4 +56,4 @@ Route::get( '/products/search', [ SearchController::class, 'search' ] )->name( '
 Route::get( '/checkout', [ CheckoutController::class, 'index' ] );
 
 Route::get( '/checkout', [ CheckoutController::class, 'index' ] );
-
+Route::get( '/delete/elastic/{id}', [ ProductController::class, 'deleteProduct' ] );

@@ -59,7 +59,12 @@
                 <label class="text-gray-800 text-sm mb-2 block">Confirm Password</label>
                 <input name="cpassword" type="password" class="text-gray-800 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500" placeholder="Enter confirm password" />
               </div>
-  
+              @error('cpassword')
+              <div class="invalid-feedback text-red-500">
+                  {{ $message }}
+              </div>
+              @enderror
+              
              
             </div>
   

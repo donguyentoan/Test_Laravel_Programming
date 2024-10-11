@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 interface AddToCartRepositoryInterface {
-    public function addCart( array $data );
+    public function addCart(array $data);
 
-    public function RemoveCart( $id );
+    public function RemoveCart($id);
 }

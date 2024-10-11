@@ -5,17 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Http\Requests\LoginRequest;
-use App\Validation\AuthorValidation;
+
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller {
     protected $userService;
     protected $authorValidation;
 
-    public function __construct( UserService $userService, AuthorValidation $authorValidation )
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
-        $this->authorValidation = $authorValidation;
+      
     }
     public function login()
     {

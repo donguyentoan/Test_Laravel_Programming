@@ -8,7 +8,7 @@ use App\Services\ProductService;
 class HomeController extends Controller {
     protected $productService;
 
-    public function __construct( ProductService $productService )
+    public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
     }

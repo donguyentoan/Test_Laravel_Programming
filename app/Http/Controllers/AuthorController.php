@@ -17,7 +17,7 @@ class AuthorController extends Controller {
     protected $userService;
     protected $authorValidation;
 
-    public function __construct( UserService $userService, AuthorValidation $authorValidation )
+    public function __construct(UserService $userService, AuthorValidation $authorValidation)
     {
         $this->userService = $userService;
         $this->authorValidation = $authorValidation;

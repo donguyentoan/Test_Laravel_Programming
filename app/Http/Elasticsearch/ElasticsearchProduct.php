@@ -7,7 +7,7 @@ use App\Models\Product;
 class ElasticsearchProduct {
     public static  $index = 'products';
 
-    public function indexProduct( Product $product )
+    public function indexProduct(Product $product)
     {
         $client = app( 'elasticsearch' );
         $dataProduct = [
@@ -27,7 +27,7 @@ class ElasticsearchProduct {
             'body'  => $dataProduct,
         ];
         try {
-            $response = $client->index( $params );
+            $response = $client->index($params);
             if ( $response[ 'result' ] === 'created' ) {
                 return response()->json( [ 'message' => 'Product added successfully.', 'id' => $response[ '_id' ] ], 201 );
             } else {
@@ -39,7 +39,7 @@ class ElasticsearchProduct {
 
     }
 
-    public function deleteProduct( $id )
+    public function deleteProduct($id)
     {
         $client = app( 'elasticsearch' );
         $params = [
@@ -60,7 +60,7 @@ class ElasticsearchProduct {
         }
     }
 
-    public function updateProduct( Product $product ) {
+    public function updateProduct(Product $product) {
         $client = app( 'elasticsearch' );
         $dataProduct = [
             'name' => $product->name,
