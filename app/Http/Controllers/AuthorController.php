@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -16,7 +17,8 @@ class AuthorController extends Controller {
     protected $userService;
     protected $authorValidation;
 
-    public function __construct( UserService $userService, AuthorValidation $authorValidation ) {
+    public function __construct( UserService $userService, AuthorValidation $authorValidation )
+    {
         $this->userService = $userService;
         $this->authorValidation = $authorValidation;
     }

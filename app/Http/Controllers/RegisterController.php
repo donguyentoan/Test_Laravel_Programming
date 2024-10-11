@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -14,18 +13,20 @@ class RegisterController extends Controller {
     protected $userService;
     protected $authorValidation;
 
-    public function __construct( UserService $userService, AuthorValidation $authorValidation ) {
+    public function __construct( UserService $userService, AuthorValidation $authorValidation )
+    {
         $this->userService = $userService;
         $this->authorValidation = $authorValidation;
     }
 
-    public function register() {
+    public function register()
+    {
         return view( 'customer.author.register' );
     }
 
-    public function createUser( RegisterRequest $request ) {
-        $data = $request->validated();
-
+    public function createUser(Request $request )
+    {
+        $data = $request->all();
         if ( $data[ 'password' ] == $request->input( 'cpassword' ) ) {
             $data = [
                 'name' =>$data[ 'name' ],

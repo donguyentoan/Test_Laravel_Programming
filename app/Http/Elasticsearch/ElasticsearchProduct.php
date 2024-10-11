@@ -4,11 +4,11 @@ namespace App\Http\Elasticsearch;
 use Exception;
 use App\Models\Product;
 
-class ElasticsearchProduct  {
+class ElasticsearchProduct {
     public static  $index = 'products';
 
-    public function indexProduct( Product $product ) {
-
+    public function indexProduct( Product $product )
+    {
         $client = app( 'elasticsearch' );
         $dataProduct = [
             'name' => $product->name,
@@ -39,16 +39,14 @@ class ElasticsearchProduct  {
 
     }
 
-    public function deleteProduct( $id ) {
-
+    public function deleteProduct( $id )
+    {
         $client = app( 'elasticsearch' );
-
         $params = [
             'index' => self::$index,
             'type' => '_doc',
             'id' => $id,
         ];
-
         try {
             $response = $client->delete( $params );
             dd( $reponse );

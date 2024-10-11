@@ -25,16 +25,15 @@ use App\Http\Controllers\RegisterController;
 Route::get( '/', [ HomeController::class, 'home' ] );
 
 Route::get( '/login', [ LoginController::class, 'login' ] );
-Route::post( '/login', [ LoginController::class, 'loginUser' ] );
+Route::post( '/login', [ LoginController::class, 'loginUser' ] )->middleware( 'loginRequestMiddleware' );
 
 Route::get( '/cart', [ CartController::class, 'cart' ] );
 Route::post( '/cart', [ CartController::class, 'saveCart' ] );
-Route::post('/del/cart' , [CartController::class, 'removeCart']);
-Route::post('/update/cart' , [CartController::class, 'updateCart']);
-
+Route::post( '/del/cart', [ CartController::class, 'removeCart' ] );
+Route::post( '/update/cart', [ CartController::class, 'updateCart' ] );
 
 Route::get( '/register', [ RegisterController::class, 'register' ] );
-Route::post( '/register', [ RegisterController::class, 'createUser' ] );
+Route::post( '/register', [ RegisterController::class, 'createUser' ] )->middleware( 'registerRequestMiddleware' );
 Route::get( '/product/{id}', [ ProductController::class, 'detail' ] );
 
 Route::get( '/dashboard', [ AdminController::class, 'index' ] )->name( 'dashboard' );
@@ -44,18 +43,17 @@ Route::get( '/dashboard/product', [ AdminController::class, 'indexProduct' ] );
 
 Route::get( '/addProduct', [ AdminController::class, 'add' ] );
 
-Route::post( '/uploads', [ AdminController::class, 'addProduct' ] );
+Route::post( '/uploads', [ AdminController::class, 'addProduct' ] )->middleware( 'productRequestMiddleware' );
 
 Route::get( 'dashboard/product/edit/{id}', [ AdminController::class, 'edit' ] );
 Route::get( '/dashboard/product/delete/{id}', [ AdminController::class, 'delete' ] );
 
-Route::post( '/update/product', [ AdminController::class, 'store' ] );
+Route::post( '/update/product', [ AdminController::class, 'store' ] )->middleware( 'productRequestMiddleware' );
+;
 
 Route::get( '/products/search', [ SearchController::class, 'search' ] )->name( 'products.search' );
 
 Route::get( '/checkout', [ CheckoutController::class, 'index' ] );
 
 Route::get( '/checkout', [ CheckoutController::class, 'index' ] );
-
-
 

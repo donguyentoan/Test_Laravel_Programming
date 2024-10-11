@@ -43,7 +43,7 @@
                                 aria-describedby="user_avatar_help">
                         </div>
                     <div class="mt-1 text-sm text-black" id="user_avatar_help">Tải hình ảnh sản phẩm lên</div>
-
+                        
                 </div>
                 @if ($errors->has('image'))
                 <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('image') }}</p>
@@ -52,7 +52,7 @@
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 text-black">Name</label>
                     <input type="text" id="name" name="name"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập tên sản phẩm" required>
+                        placeholder="Nhập tên sản phẩm">
                     @if ($errors->has('name'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('name') }}</p>
                     @endif
@@ -62,7 +62,7 @@
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 text-black">Manufacturer</label>
                     <input type="text" id="name" name="manufacturer"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập tên sản phẩm" required>
+                        placeholder="Nhập tên sản phẩm" >
                     @if ($errors->has('manufacturer'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('manufacturer') }}</p>
                     @endif
@@ -72,7 +72,7 @@
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 text-black">Model</label>
                     <input type="text" id="name" name="model"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập tên sản phẩm" required>
+                        placeholder="Nhập tên sản phẩm" >
                     @if ($errors->has('model'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('model') }}</p>
                     @endif
@@ -83,7 +83,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 text-black">engine_capacity</label>
                     <input type="text" id="description" name="engine_capacity"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập mô tả sản phẩm" required>
+                        placeholder="Nhập mô tả sản phẩm" >
 
                     @if ($errors->has('engine_capacity'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('engine_capacity') }}</p>
@@ -94,7 +94,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 text-black">tags</label>
                     <input type="text" id="description" name="tags"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập mô tả sản phẩm" required>
+                        placeholder="Nhập mô tả sản phẩm" >
 
                     @if ($errors->has('tags'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('tags') }}</p>
@@ -105,7 +105,7 @@
                         class="block mb-2 text-sm font-medium text-gray-900 text-black">price</label>
                     <input type="text" id="price" name="price"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-200 border-gray-600 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
-                        placeholder="Nhập mô tả sản phẩm" required>
+                        placeholder="Nhập mô tả sản phẩm" >
 
                     @if ($errors->has('price'))
                     <p class="help is-danger text-red-500 font-semibold">{{ $errors->first('price') }}</p>

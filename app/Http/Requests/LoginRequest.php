@@ -4,25 +4,24 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
-{
+class LoginRequest extends FormRequest {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
+    * Determine if the user is authorized to make this request.
+    *
+    * @return bool
+    */
+
+    public function authorize() {
         return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
+    * Get the validation rules that apply to the request.
+    *
+    * @return array
+    */
+
+    public function rules() {
         return [
             'email' => 'required|exists:users,email',
             'password' => 'required|min:4',
@@ -30,8 +29,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
+    public function messages() {
         return [
             'email.required' => 'Trường email là bắt buộc.',
             'email.exists' => 'Địa chỉ email không chính xác.',

@@ -7,19 +7,23 @@ use App\Repositories\ProductRepositoryInterface;
 class ProductRepository implements ProductRepositoryInterface {
     protected $model;
 
-    public function __construct( Product $product ) {
+    public function __construct( Product $product )
+    {
         $this->model = $product;
     }
 
-    public function index() {
+    public function index()
+    {
         return $this->model->all();
     }
 
-    public function edit( $id ) {
+    public function edit( $id )
+    {
         return $this->model->find( $id );
     }
 
-    public function addProduct( array $data ) {
+    public function addProduct( array $data )
+    {
         $product = new Product();
         $product->name = $data[ 'name' ] ?? null;
         $product->manufacturer = $data[ 'manufacturer' ] ?? null;
@@ -33,24 +37,26 @@ class ProductRepository implements ProductRepositoryInterface {
         return $product;
     }
 
-    public function store( $id, array $data ) {
-        // return $this->model->where( 'id', $id )->update( $data )->get();
+    public function store( $id, array $data )
+    {
         $updated = $this->model->where( 'id', $id )->update( $data );
         if ( $updated ) {
             return $this->model->where( 'id', $id )->first();
         }
-
     }
 
-    public function delete( $id ) {
+    public function delete( $id )
+    {
         return $this->model->destroy( $id );
     }
 
-    public function findByName( $name ) {
+    public function findByName( $name )
+    {
         return $this->model->where( 'name', $name )->first();
     }
 
-    public function findByActive() {
+    public function findByActive()
+    {
         return $this->model->where( 'is_active', 1 )->get();
     }
 }

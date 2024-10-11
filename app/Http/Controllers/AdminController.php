@@ -5,54 +5,55 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Requests\ProductRequest;
-use App\Validation\ProductValidation;
 use App\Http\Elasticsearch\ElasticsearchProduct;
 
 class AdminController extends Controller {
     protected $productService;
-    protected $productValidation;
+ 
     protected $elasticsearchProduct;
 
     public function __construct(
         ProductService $productService,
-        ProductValidation $productValidation,
         ElasticsearchProduct $elasticsearchProduct
     ) {
         $this->elasticsearchProduct = $elasticsearchProduct;
         $this->productService = $productService;
-        $this->productValidation = $productValidation;
     }
 
-    public function index() {
+    public function index()
+    {
         return view( 'admin.dashboard.index' );
     }
-
-    public function indexProduct() {
+    public function indexProduct()
+    {
         $products = $this->productService->index();
         return view( 'admin.product.index', [
             'products' => $products
         ] );
     }
-
-    public function add() {
+    public function add()
+    {
         return view( 'admin.product.add' );
     }
-
-    public function edit( $id ) {
+    public function edit( $id )
+    {
         $product = $this->productService->edit( $id );
         return view( 'admin.product.edit', [
             'product' => $product
         ] );
     }
-
-    public function addProduct( ProductRequest $request ) {
+    public function addProduct( Request $request )
+    {
         $data = $request->validated();
+        if($request->file('image') == null){
+            return redirect('/productList')->with('error', 'The product image is required.');
+        }
         $existingProduct = $this->productService->findByName( $request->input( 'name' ) );
-
         if ( $existingProduct ) {
+         
+            
             return redirect( '/productList' )->with( 'success', 'Product Already Exists' );
         }
-
         $fileName = null;
         if ( $request->hasFile( 'image' ) && $request->file( 'image' )->isValid() ) {
             $file = $request->file( 'image' );
@@ -60,9 +61,7 @@ class AdminController extends Controller {
             $path = 'upload';
             $file->move( $path, $fileName );
         }
-
         $status = $request->input( 'status' ) === 'on' ? 1 : 0;
-
         $dataProduct = [
             'name' => $request->input( 'name' ),
             'manufacturer' => $request->input( 'manufacturer' ),
@@ -73,26 +72,22 @@ class AdminController extends Controller {
             'tags' => $request->input( 'tags' ) ? json_encode( explode( ',', $request->input( 'tags' ) ) ) : null,
             'is_active' => $status,
         ];
-
         $product = $this->productService->addProduct( $dataProduct );
         $response = $this->elasticsearchProduct->indexProduct( $product );
-
         $statusCode = $response->getStatusCode();
         if ( $statusCode == 201 && $product != null ) {
             return redirect( '/dashboard/product' )->with( 'success', 'Add successfully' );
         }
     }
 
-    public function store( ProductRequest $request ) {
+    public function store( Request $request )
+    {
         $data = $request->validated();
         $data = $request->all();
-
         $product = $this->productService->edit( $data[ 'id' ] );
         $status = $request->input( 'status' ) === 'on' ? 1 : 0;
-
         $oldPhoto = $product->image;
         $fileName = ' ';
-
         if ( $request->hasFile( 'image' ) ) {
             if ( $oldPhoto != null && file_exists( 'upload/' . $oldPhoto ) ) {
                 $deleted = unlink( 'upload/' . $oldPhoto );
@@ -111,7 +106,6 @@ class AdminController extends Controller {
                 $product->image = $fileName;
             }
         }
-
         $data = [
             'name' => $request->input( 'name' ),
             'manufacturer' => $request->input( 'manufacturer' ),
@@ -122,33 +116,27 @@ class AdminController extends Controller {
             'tags' => $request->input( 'tags' ) ? json_encode( explode( ',', $request->input( 'tags' ) ) ) : null,
             'is_active' => $status,
         ];
-
         $product = $this->productService->store( $product->id, $data );
         $response = $this->elasticsearchProduct->updateProduct( $product );
-
         $statusCode = $response->getStatusCode();
         if ( $statusCode == 200 ) {
             return redirect( '/dashboard/product' )->with( 'success', 'Edit successfully' );
         }
     }
 
-    public function delete( $id ) {
+    public function delete( $id )
+    {
         $product = $this->productService->edit( $id );
-
         if ( !$product ) {
             return redirect( '/dashboard/product' )->with( 'error', 'Lỗi! Không tìm thấy sản phẩm' );
         }
-
         $product->delete();
         $oldPhoto = $product->image;
-
         if ( $oldPhoto !== null && file_exists( 'upload/' . $oldPhoto ) ) {
             unlink( 'upload/' . $oldPhoto );
         }
-
         $response = $this->elasticsearchProduct->deleteProduct( $id );
         $statusCode = $response->getStatusCode();
-
         if ( $statusCode == 500 ) {
             return redirect( '/dashboard/product' )->with( 'success', 'Delete successfully' );
         }
